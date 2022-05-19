@@ -9,10 +9,10 @@ arch=('x86_64')
 url='https://gcc.gnu.org/'
 license=('GPL' 'LGPL' 'FDL')
 groups=('loongarch')
-depends=('crossbuild-ng-loongarch64')
+depends=('crosstool-ng-loongarch64')    # Dedicated version of crosstool-ng: https://github.com/AnClark/crosstool-ng-loongarch64-PKGBUILD
 options=('!emptydirs' '!strip' '!buildflags')
-provides=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')
-conflicts=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')
+provides=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')        # The two packages come from AUR.
+conflicts=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')       # Since our package contains binutils, no need to built there.
 source=('git+https://github.com/jiegec/ct-ng-loongarch64#commit=b3ce2ead0')    # crosstool-NG Config file from Jiege
 sha256sums=('SKIP')
 
