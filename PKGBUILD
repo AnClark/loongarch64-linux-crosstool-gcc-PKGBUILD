@@ -29,6 +29,9 @@ prepare() {
   sed -i -E "s|CT_LOCAL_TARBALLS_DIR=.*|CT_LOCAL_TARBALLS_DIR=\"$srcdir/download\"|g" .config    # Tarball download path
   sed -i -E "s|CT_PREFIX_DIR=.*|CT_PREFIX_DIR=\"$srcdir/out\"|g" .config                         # Target path (prefix)
   sed -i -E "s|CT_WORK_DIR=.*|CT_WORK_DIR=\"$srcdir/build\"|g" .config                           # Work directory
+
+  # Do not render prefix directory read-only
+  sed -i -E "s|CT_PREFIX_DIR_RO=.*|CT_PREFIX_DIR_RO=n|g" .config
 }
 
 build() {
