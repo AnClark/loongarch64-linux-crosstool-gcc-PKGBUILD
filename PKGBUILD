@@ -9,12 +9,23 @@ arch=('x86_64')
 url='https://gcc.gnu.org/'
 license=('GPL' 'LGPL' 'FDL')
 groups=('loongarch')
-depends=('crosstool-ng-loongarch64')    # Dedicated version of crosstool-ng: https://github.com/AnClark/crosstool-ng-loongarch64-PKGBUILD
 options=('!emptydirs' '!strip' '!buildflags')
 provides=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')        # The two packages come from AUR.
 conflicts=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')       # Since our package contains binutils, no need to built there.
-source=('git+https://github.com/jiegec/ct-ng-loongarch64#commit=b3ce2ead0')    # crosstool-NG Config file from Jiege
-sha256sums=('SKIP')
+source=('git+https://github.com/jiegec/crosstool-ng.git#branch=loongarch'
+        'git+https://github.com/jiegec/ct-ng-loongarch64#commit=b3ce2ead0')    # crosstool-NG source and config file from Jiege
+sha256sums=('SKIP'
+            'SKIP')
+
+_build_ct-ng() {
+  # Build crosstool-NG
+  cd "$srcdir"/crosstool-ng
+  if [ ! -e configure ]; then
+    ./bootstrap
+  fi
+  ./configure --enable-local
+  make -j$(nproc)
+}
 
 prepare() {
   # Create work directories
@@ -32,11 +43,14 @@ prepare() {
 
   # Do not render prefix directory read-only
   sed -i -E "s|CT_PREFIX_DIR_RO=.*|CT_PREFIX_DIR_RO=n|g" .config
+
+  _build_ct-ng
 }
 
 build() {
+  # Build toolchain
   cd "$srcdir"/build
-  ct-ng-loongarch64 build
+  "$srcdir"/crosstool-ng/ct-ng build
 }
 
 package() {
