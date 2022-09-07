@@ -1,7 +1,10 @@
 # Source directories
-src/*
-pkg/*
-ct-ng*/
+src/**
+pkg/**
+ct-ng*/**
+crosstool-ng*/**
 
 # Packages
 *.tar*
+
+
