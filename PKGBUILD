@@ -12,14 +12,14 @@ groups=('loongarch')
 options=('!emptydirs' '!strip' '!buildflags')
 provides=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')        # The two packages come from AUR.
 conflicts=('loongarch64-linux-gnu-gcc' 'loongarch64-linux-gnu-binutils')       # Since our package contains binutils, no need to built there.
-source=('git+https://github.com/jiegec/crosstool-ng.git#branch=loongarch'
+source=('git+https://github.com/anclark/crosstool-ng-loongarch64.git#branch=loongarch'
         'git+https://github.com/jiegec/ct-ng-loongarch64#commit=b3ce2ead0')    # crosstool-NG source and config file from Jiege
 sha256sums=('SKIP'
             'SKIP')
 
 _build_ct-ng() {
   # Build crosstool-NG
-  cd "$srcdir"/crosstool-ng
+  cd "$srcdir"/crosstool-ng-loongarch64
   if [ ! -e configure ]; then
     ./bootstrap
   fi
@@ -50,7 +50,7 @@ prepare() {
 build() {
   # Build toolchain
   cd "$srcdir"/build
-  "$srcdir"/crosstool-ng/ct-ng build
+  "$srcdir"/crosstool-ng-loongarch64/ct-ng build
 }
 
 package() {
